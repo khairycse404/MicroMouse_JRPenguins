@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+<robot name="micromouse" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find mouse_description)/urdf/gazebo_core.xacro"/>
+
+
+    <!-- ========================================== -->
+    <!--                   MATERIALS                -->
+    <!-- ========================================== -->
+    <material name="gray"><color rgba="0.5 0.5 0.5 1.0"/></material>
+    <material name="black"><color rgba="0.15 0.15 0.15 1.0"/></material>
+    <material name="red"><color rgba="0.8 0.1 0.1 1.0"/></material>
+    <material name="gold"><color rgba="0.9 0.7 0.1 1.0"/></material>
+
+    <!-- ========================================== -->
+    <!--                   LINKS                    -->
+    <!-- ========================================== -->
+
+    <link name="footprint_link"/>
+
+    <!-- 1. Main Mouse Chassis -->
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/mouse.STL"/></geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/mouse.STL"/></geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0.009" rpy="${-pi/50} 0 ${pi/40}"/>
+            <mass value="0.02173"/>
+            <!-- <inertia ixx="6.146e-06" ixy="2.132e-07" ixz="-1.922e-08" iyy="8.787e-06" iyz="-2.421e-08" izz="9.405e-06"/> -->
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>       
+        </inertial>
+    </link>
+
+    <!-- 2. Front Right Wheel (Standard) -->
+    <link name="FR_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="${pi/2} ${pi/2} ${pi/2}"/>
+            <geometry><mesh filename="package://mouse_description/meshes/wheel_D20.STL"/></geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0.0035 0" rpy="${pi/2} 0 0"/> 
+            <geometry>
+                <cylinder radius="0.01" length="0.0048"/> 
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="${pi/2} ${pi/2} 0"/>
+            <mass value="0.003"/>
+            <inertia ixx="1.3e-07" ixy="0.0" ixz="0.0" iyy="8.0e-08" iyz="0.0" izz="1.3e-07"/>
+        </inertial>
+    </link>
+
+    <!-- 3. Back Left Wheel (Standard) -->
+    <link name="BL_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="${pi/2} ${pi/2} ${-pi/2}"/>
+            <geometry><mesh filename="package://mouse_description/meshes/wheel_D20.STL"/></geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <origin xyz="0 -0.0035 0" rpy="${-pi/2} 0 0"/> 
+            <geometry>
+                <cylinder radius="0.01" length="0.0048"/> 
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="${pi/2} ${pi/2} 0"/>
+            <mass value="0.003"/>
+            <inertia ixx="1.3e-07" ixy="0.0" ixz="0.0" iyy="8.0e-08" iyz="0.0" izz="1.3e-07"/>
+        </inertial>
+    </link>
+
+    <!-- 4. Front Left Wheel (Shaft) -->
+    <link name="FL_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
+            <geometry><mesh filename="package://mouse_description/meshes/shaft_wheel.STL"/></geometry>
+            <material name="gold"/>
+        </visual>
+        <collision>
+            <origin xyz="0 -0.0035 0" rpy="${-pi/2} 0 0"/> 
+            <geometry>
+                <cylinder radius="0.01" length="0.0048"/> 
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.003"/>
+            <inertia ixx="8.0e-08" ixy="0.0" ixz="0.0" iyy="1.3e-07" iyz="0.0" izz="1.3e-07"/>
+        </inertial>
+    </link>
+
+    <!-- 5. Back Right Wheel -->
+    <link name="BR_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/shaft_wheel.STL"/></geometry>
+            <material name="gold"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0.0035 0" rpy="${pi/2} 0 0"/> 
+            <geometry>
+                <cylinder radius="0.01" length="0.0048"/> 
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.003"/>
+            <inertia ixx="8.0e-08" ixy="0.0" ixz="0.0" iyy="1.3e-07" iyz="0.0" izz="1.3e-07"/>
+        </inertial>
+    </link>
+
+    <!-- 6. O-Ring Right -->
+    <link name="o_ring_right_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/o_ring.STL"/></geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/o_ring.STL"/></geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.00014"/>
+            <inertia ixx="1.68e-09" ixy="0.0" ixz="0.0" iyy="1.805e-08" iyz="0.0" izz="1.642e-08"/>
+        </inertial>
+    </link>
+
+    <!-- 7. O-Ring Left -->
+    <link name="o_ring_left_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/o_ring.STL"/></geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/o_ring.STL"/></geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.00014"/>
+            <inertia ixx="1.68e-09" ixy="0.0" ixz="0.0" iyy="1.805e-08" iyz="0.0" izz="1.642e-08"/>
+        </inertial>
+    </link>
+
+    <!-- 8. TOF Middle -->
+    <link name="TOF_Middle_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/TOF.stl"/></geometry>
+            <material name="black"/>
+        </visual>
+        <!-- <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.00014"/>
+            <inertia ixx="1.68e-09" ixy="0.0" ixz="0.0" iyy="1.805e-08" iyz="0.0" izz="1.642e-08"/>
+        </inertial> -->
+    </link>
+
+    <link name="TOF_Left_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/TOF.stl"/></geometry>
+            <material name="black"/>
+        </visual>
+        <!-- <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.00014"/>
+            <inertia ixx="1.68e-09" ixy="0.0" ixz="0.0" iyy="1.805e-08" iyz="0.0" izz="1.642e-08"/>
+        </inertial> -->
+    </link>
+
+    <link name="TOF_Right_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry><mesh filename="package://mouse_description/meshes/TOF.stl"/></geometry>
+            <material name="black"/>
+        </visual>
+        <!-- <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.00014"/>
+            <inertia ixx="1.68e-09" ixy="0.0" ixz="0.0" iyy="1.805e-08" iyz="0.0" izz="1.642e-08"/>
+        </inertial> -->
+    </link>
+
+    <!-- ========================================== -->
+    <!--                   IMU LINK                 -->
+    <!-- ========================================== -->
+    <link name="imu_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.005 0.005 0.005"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+    </link>
+
+
+    <!-- ========================================== -->
+    <!--                   JOINTS                   -->
+    <!-- ========================================== -->
+    <joint name="base_footprint" type="fixed">
+        <parent link="base_link"/>
+        <child link="footprint_link"/>
+        <origin xyz="0 0 -0.012084" rpy="0 0 0"/>   
+    </joint>
+    
+    <joint name="FR_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="FR_wheel_link"/>
+        <origin xyz="-0.013615 0.027773 -0.001605" rpy="0 0 0"/> 
+        <axis xyz="0 1 0"/>  
+        <dynamics damping="0.005" friction="0.001"/>
+    </joint>
+
+    <joint name="BL_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="BL_wheel_link"/>
+        <origin xyz="0.013615 -0.027773 -0.001605" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <dynamics damping="0.005" friction="0.001"/>
+    </joint>
+    
+    <joint name="FL_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="FL_wheel_link"/>
+        <origin xyz="-0.013615 -0.027773 -0.001605" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <dynamics damping="0.005" friction="0.001"/>
+    </joint>
+
+    <joint name="BR_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="BR_wheel_link"/>
+        <origin xyz="0.013615 0.027773 -0.001605" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <dynamics damping="0.005" friction="0.001"/>
+    </joint>
+
+    <joint name="o_ring_right_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="o_ring_right_link"/>
+        <origin xyz="0 0.026255 -0.001003" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="o_ring_left_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="o_ring_left_link"/>
+        <origin xyz="0 -0.026255 -0.001003" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="TOF_Middle_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="TOF_Middle_link"/>
+        <origin xyz="0.029577 0 0.035253" rpy="${pi} 0 0"/>
+    </joint>
+
+    <joint name="TOF_Left_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="TOF_Left_link"/>
+        <origin xyz="0.025479 0.02041 0.035253" rpy="${pi} 0 ${pi/4}"/>
+    </joint>
+
+    <joint name="TOF_Right_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="TOF_Right_link"/>
+        <origin xyz="0.025479 -0.02041 0.035253" rpy="${pi} 0 ${-pi/4}"/>
+    </joint>
+
+
+    <joint name="imu_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+        <origin xyz="0 0 0.02" rpy="0 0 0"/> 
+    </joint>
+
+</robot>
